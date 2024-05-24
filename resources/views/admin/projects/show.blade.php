@@ -18,6 +18,7 @@
                       <p class="card-text">{{$project->href}}</p>
                       <p class="card-text">{{$project->type}}</p>
                       <p class="card-text">{{$project->description}}</p>
+                      <p class="card-text">{{$project->type->name}}</p>
 
                     <div class="d-flex mb-3">
 

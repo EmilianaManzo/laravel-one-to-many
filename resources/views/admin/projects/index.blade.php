@@ -3,9 +3,17 @@
 @section('content')
 <section class="h-100 flex-grow-1 sec-index ">
     <div class="container pt-4 w-100 ">
+
+
         <div class="mb-2">
             <a href="{{route('admin.projects.create')}}" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
         </div>
+
+        @if (isset($_GET['toSearch']))
+        <div class="mt-2">
+            <h1>Progetti trovati per {{$_GET['toSearch']}}: {{$count_search}} </h1>
+        </div>
+        @endif
 
         @if ($errors->any())
            <div class="alert alert-danger " role="alert">
@@ -40,6 +48,7 @@
       <table class="table  w-100 ">
         <thead>
           <tr>
+            <th scope="col">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Link</th>
             <th scope="col">Tipo</th>
@@ -48,18 +57,21 @@
           </tr>
         </thead>
         <tbody>
-            @foreach ($projects as $project )
+            @forelse ($projects as $project )
             <tr>
                 <th scope="row">
-                    {{$project->title}}
+                    <a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'id'])}}">{{$project->id}}</a>
                 </th>
+                <tr>
+                    <a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'title'])}}">{{$project->title}}</a>
+                </tr>
 
                 <td>
                     {{$project->href}}
                 </td>
 
                 <td>
-                    {{$project->type}}
+                    {{$project->type->name}}
                 </td>
 
                 <td>
@@ -81,7 +93,9 @@
                 </td>
 
             </tr>
-            @endforeach
+                @empty
+                <h3>Non c'è niente Amio!</h3>
+            @endforelse
         </tbody>
     </table>
     <div class="paginator">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Functions\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TypeRequest;
+use App\Models\Project;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,11 @@ class TypeController extends Controller
     {
         $types = Type::orderByDesc('id')->paginate(10);
         return view('admin.types.index', compact('types'));
+    }
+
+    public function typeProjects(){
+        $types = Type::paginate('10');
+        return view('admin.types.type-projects', compact('types'));
     }
 
     /**

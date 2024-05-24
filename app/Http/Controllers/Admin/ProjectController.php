@@ -6,7 +6,10 @@ use App\Functions\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
+
+use function PHPSTORM_META\type;
 
 class ProjectController extends Controller
 {
@@ -15,8 +18,25 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::orderByDesc('id')->paginate(15);
-        return view('admin.projects.index', compact('projects'));
+        if(isset($_GET['toSearch'])){
+            $projects = Project::where('title', 'LIKE', '%' . $_GET['toSearch'] . '%')->paginate(15);
+            $count_search = Project::where('title', 'LIKE', '%' . $_GET['toSearch'] . '%')->count();
+        }else{
+
+            $projects = Project::orderBy('id')->paginate(15);
+            $count_search = Project::count();
+        }
+
+        $direction = 'desc';
+
+        return view('admin.projects.index', compact('projects','count_search','direction'));
+    }
+
+    public function orderBy($direction , $column){
+        $direction =  $direction === 'desc' ? 'asc' : 'desc' ;
+        $projects = Project::orderBy($column, $direction)->paginate(15);
+        $count_search = Project::count();
+        return view('admin.projects.index', compact('projects','count_search','direction'));
     }
 
     /**
@@ -29,7 +49,8 @@ class ProjectController extends Controller
         $project=null;
         $button='Crea progetto';
         $method= 'POST';
-        return view('admin.projects.create-edit', compact('title','route','project', 'button','method'));
+        $types = Type::all();
+        return view('admin.projects.create-edit', compact('title','route','project', 'button','method','types'));
     }
 
     /**
@@ -58,6 +79,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+
         return view('admin.projects.show', compact('project'));
     }
 
@@ -71,7 +93,8 @@ class ProjectController extends Controller
         $route=route('admin.projects.update', $project);
         $button='Aggiorna progetto';
         $method= 'PUT';
-        return view('admin.projects.create-edit', compact('title','route','project', 'button','method'));
+        $types = Type::all();
+        return view('admin.projects.create-edit', compact('title','route','project', 'button','method','types'));
     }
 
     /**
@@ -95,7 +118,7 @@ class ProjectController extends Controller
             }
 
             $project->update($form_data);
-             return redirect()->route('admin.projects.index',$project)->with('update', 'Il progetto è stato aggiornato');
+            return redirect()->route('admin.projects.index',$project)->with('update', 'Il progetto è stato aggiornato');
 
 
 

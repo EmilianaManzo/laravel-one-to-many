@@ -17,7 +17,6 @@ class Project extends Model
         'title',
         'slug',
         'href',
-        'type',
         'description'
     ];
 }

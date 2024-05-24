@@ -40,6 +40,7 @@
                       </small>
                   @enderror
             </div>
+
             <div class="mb-3">
                 <label for="href" class="form-label">Link</label>
                 <input
@@ -54,20 +55,26 @@
                       </small>
                   @enderror
             </div>
+
             <div class="mb-3">
                 <label for="type" class="form-label">Tipo</label>
-                <input
-                  type="text"
-                  class="form-control @error('type') is-invalid @enderror"
-                  id="type"
-                  name="type"
-                  value="{{old('type',$project?->type)}}">
-                  @error('type')
-                      <small class="text-danger">
-                        {{$message}}
-                      </small>
-                  @enderror
+                <select name="type_id"
+                class="form-select "
+                aria-label="Default select example"
+                >
+
+                <option value="">Seleziona un tipo</option>
+                    @foreach ($types as $type )
+                    <option
+                    value="{{$type->id}}"
+                    @if(old('type_id', $project?->type->id) == $type->id ) selected  @endif>
+                    {{$type->name}}
+                    </option>
+
+                    @endforeach
+                </select>
             </div>
+
             <div class="mb-3">
                 <label for="description" class="form-label">Descrizione</label>
                 <textarea cols="30" rows="10" class="form-control" id="description" name="description" value="{{old('description',$project?->description)}}"></textarea>

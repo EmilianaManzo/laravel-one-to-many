@@ -32,6 +32,10 @@ Route::middleware(['auth', 'verified'])
             Route::resource('projects', ProjectController::class);
             Route::resource('tecnologies', TecnologyController::class)->except('');
             Route::resource('types', TypeController::class)->except('');
+
+
+            Route::get('type-projects', [TypeController::class, 'typeProjects'] )->name('type-projects');
+            Route::get('orderby/{direction}/{column}', [ProjectController::class, 'orderBy'] )->name('orderby');
         });
 
 

@@ -16,15 +16,14 @@
             <div class="col">
                       <h5 class="card-title mb-2">{{$project->title}}</h5>
                       <p class="card-text">{{$project->href}}</p>
-                      <p class="card-text">{{$project->type}}</p>
+                      <p class="card-text">{{$project->type->id}} {{$project->type->name}}</p>
                       <p class="card-text">{{$project->description}}</p>
-                      <p class="card-text">{{$project->type->name}}</p>
 
                     <div class="d-flex mb-3">
 
                         @include('admin.partials.formdelete',[
                             'route'=> route('admin.projects.destroy', $project),
-                            'message' => 'Sei sicuro di voler eliminare {{$project->title}} ?'
+                            'message' =>  "Sei sicuro di voler eliminare   $project->title ?"
                             ])
 
                         <a href="{{route('admin.projects.index')}}" class="btn btn-success mx-2">Torna ai projects</a>

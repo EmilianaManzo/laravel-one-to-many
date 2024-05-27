@@ -21,9 +21,10 @@ class TypeController extends Controller
     }
 
     public function typeProjects(){
-        $types = Type::paginate('10');
+        $types = Type::paginate(5);
         return view('admin.types.type-projects', compact('types'));
     }
+
 
     /**
      * Show the form for creating a new resource.

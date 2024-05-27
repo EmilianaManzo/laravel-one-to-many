@@ -140,3 +140,8 @@
     }
 </script>
 @endsection
+
+@section('title')
+    Type
+@endsection
+

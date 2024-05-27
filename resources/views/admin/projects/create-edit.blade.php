@@ -15,23 +15,21 @@
            </div>
        @endif
 
-       {{-- TODO: AGGIUNGERE ERRORI --}}
-
        @if(session('error'))
         <div class="alert alert-danger" role="alert">
         {{ session('error')}}
         </div>
         @endif
 
-        <form action="{{$route}}" method="post">
+        <form action="{{$route}}" method="post" enctype="multipart/form-data">
             @csrf
             @method($method)
+
             <div class="mb-3">
                 <label for="title" class="form-label">Titolo</label>
                 <input
                   type="text"
                   class="form-control @error('title') is-invalid @enderror"
-                  id="title"
                   name="title"
                   value="{{old('title', $project?->title)}}">
                   @error('title')
@@ -46,7 +44,7 @@
                 <input
                   type="text"
                   class="form-control @error('href') is-invalid @enderror"
-                  id="href"
+
                   name="href"
                   value="{{old('href',$project?->href)}}">
                   @error('href')
@@ -57,13 +55,27 @@
             </div>
 
             <div class="mb-3">
+                <label for="image" class="form-label">Immagine</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  name="image"
+                  placeholder="Inserisci immagine"
+                  onchange="showImage(event)"
+                  value="{{old('image', $project?->image)}}">
+                  <img class="thumb img-thumbnail w-25 my-2" id="thumb" src="/img/noimg.jpg">
+            </div>
+
+
+
+            <div class="mb-3">
                 <label for="type" class="form-label">Tipo</label>
                 <select name="type_id"
                 class="form-select "
                 aria-label="Default select example"
                 >
 
-                <option value="">Seleziona un tipo</option>
+                    <option value="">Seleziona un tipo</option>
                     @foreach ($types as $type )
                     <option
                     value="{{$type->id}}"
@@ -85,4 +97,17 @@
 
     </div>
 </section>
+
+<script>
+    function showImage(event){
+        const thumb = document.getElementById('thumb');
+        thumb.src = URL.createObjectURL(event.target.files[0]);
+
+    }
+</script>
+@endsection
+
+
+@section('title')
+    Project
 @endsection

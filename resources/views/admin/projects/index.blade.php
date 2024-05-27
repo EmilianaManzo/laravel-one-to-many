@@ -1,17 +1,21 @@
+@php
+    use App\Functions\Helper as Help;
+@endphp
+
 @extends('layouts.admin')
 
 @section('content')
 <section class="h-100 flex-grow-1 sec-index ">
     <div class="container pt-4 w-100 ">
 
-
         <div class="mb-2">
             <a href="{{route('admin.projects.create')}}" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
         </div>
 
+
         @if (isset($_GET['toSearch']))
         <div class="mt-2">
-            <h1>Progetti trovati per {{$_GET['toSearch']}}: {{$count_search}} </h1>
+            <h1>Progetti trovati per {{$_GET['toSearch']}} : {{$count_search}} </h1>
         </div>
         @endif
 
@@ -45,52 +49,61 @@
         </div>
         @endif
 
-      <table class="table  w-100 ">
+      <table class="table  w-100 @if ($count_search == 0)
+          d-none @endif">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Title</th>
+
+            <th scope="col"><a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'id'])}}">ID</a></th>
+            <th scope="col"> <a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'title'])}}">Title</a></th>
             <th scope="col">Link</th>
             <th scope="col">Tipo</th>
             <th scope="col">Descrizione</th>
-            <th scope="col"></th>
+            <th scope="col"><a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'updated_at'])}}">Ultima modifica</a></th>
+            <th scope="col">Azioni</th>
           </tr>
         </thead>
+
         <tbody>
-            @forelse ($projects as $project )
-            <tr>
-                <th scope="row">
-                    <a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'id'])}}">{{$project->id}}</a>
-                </th>
+
+            @forelse($projects as $project )
                 <tr>
-                    <a href="{{route('admin.orderby', ['direction'=> $direction , 'column'=> 'title'])}}">{{$project->title}}</a>
-                </tr>
+                    <th scope="row">
+                        {{$project->id}}
+                    </th>
+                    <td>
+                       {{$project->title}}
+                    </td>
 
-                <td>
-                    {{$project->href}}
-                </td>
+                    <td>
+                        {{$project->href}}
+                    </td>
 
-                <td>
-                    {{$project->type->name}}
-                </td>
+                    <td>
+                        {{$project->type->name}}
+                    </td>
 
-                <td>
-                    {{$project->description}}
-                </td>
+                    <td>
+                        {{$project->description}}
+                    </td>
 
-                <td>
-                    <a href="{{route('admin.projects.edit', $project)}}" class="btn btn-warning my-2"><i
-                        class="fa-solid fa-pencil"></i></a>
+                    <td>
+                        {{Help::dateFormat($project->updated_at)}}
+                    </td>
 
-                        <a href="{{route('admin.projects.show', $project)}}" class="btn btn-primary "><i
-                        class="fa-solid fa-eye"></i></a>
+                    <td>
+                        <a href="{{route('admin.projects.edit', $project)}}" class="btn btn-warning my-2"><i
+                            class="fa-solid fa-pencil"></i></a>
 
-                        @include('admin.partials.formdelete',[
-                                'route'=> route('admin.projects.destroy', $project),
-                                'message' => "Sei sicuro di voler eliminare   $project->title ?"
-                        ])
-                        {{-- normalmente il valore della chiave lo vuole con apici singoli , con backtik e i punti per concatenare non funziona, vuole le doppie virgolette e nessuna parentesi --}}
-                </td>
+                            <a href="{{route('admin.projects.show', $project)}}" class="btn btn-primary "><i
+                            class="fa-solid fa-eye"></i></a>
+
+                            @include('admin.partials.formdelete',[
+                                    'route'=> route('admin.projects.destroy', $project),
+                                    'message' => "Sei sicuro di voler eliminare   $project->title ?"
+                            ])
+                            {{-- normalmente il valore della chiave lo vuole con apici singoli , con backtik e i punti per concatenare non funziona, vuole le doppie virgolette e nessuna parentesi --}}
+                    </td>
 
             </tr>
                 @empty
@@ -104,4 +117,9 @@
       </div>
 </div>
 </section>
+@endsection
+
+
+@section('title')
+    Project
 @endsection

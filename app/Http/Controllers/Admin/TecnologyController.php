@@ -19,6 +19,7 @@ class TecnologyController extends Controller
         return view('admin.tecnologies.index', compact('tecnology'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      */

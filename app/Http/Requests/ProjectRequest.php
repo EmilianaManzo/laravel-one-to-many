@@ -24,6 +24,7 @@ class ProjectRequest extends FormRequest
         return [
             'title' => 'required |min:3|max:60',
             'href'=> 'required|min:10',
+            'image' => 'image|mimes:png,jpg|max:20480'
         ];
     }
     public function messages(): array
@@ -33,7 +34,10 @@ class ProjectRequest extends FormRequest
             'title.min' => 'Il titolo deve contenere :min caratteri' ,
             'title.max' => 'Il titolo deve contenere :max caratteri' ,
             'href.required' => 'Il link è obbligatorio' ,
-            'href.min' => 'Il link deve contenere :min caratteri'
+            'href.min' => 'Il link deve contenere :min caratteri',
+            'image.image'=> 'Il file caricato deve essere un\'immagine',
+            'image.mimes'=> 'Il file caricato deve essere in un formato jpg o png ',
+            'image.max'=> 'Il file caricato non può pesare più di :max kb',
         ];
     }
 }

@@ -14,9 +14,12 @@ class Project extends Model
     }
 
     protected $fillable = [
+        'type_id',
         'title',
         'slug',
         'href',
+        'image',
+        'image_original_name',
         'description'
     ];
 }

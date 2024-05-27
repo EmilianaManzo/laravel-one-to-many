@@ -43,3 +43,7 @@
     </div>
 </section>
 @endsection
+
+@section('title')
+    Type-Project
+@endsection

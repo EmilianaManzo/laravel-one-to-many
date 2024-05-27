@@ -144,3 +144,7 @@
     }
 </script>
 @endsection
+
+@section('title')
+    Technology
+@endsection

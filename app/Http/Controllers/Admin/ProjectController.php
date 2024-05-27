@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 use function PHPSTORM_META\type;
@@ -60,18 +61,32 @@ class ProjectController extends Controller
     {
         $form_data = $request->all();
 
+        // verifico l'esistenza della chiave 'image' in $form_data
+        if(array_key_exists('image', $form_data)){
+            // salvo l'immagine nello storage e ottengo il percorso
+            $image_path = Storage::put('uploads', $form_data['image']);
+
+            // ottengo il nome originale dell'immagine
+            $original_name = $request->file('image')->getClientOriginalName();
+            $form_data['image']= $image_path;
+            $form_data['image_original_name']= $original_name;
+
+        }
+
+
         $exist = Project::where('title', $form_data['title'])->first();
         if($exist){
             return redirect()->route('admin.projects.create')->with('error', 'Progetto già esistente');
         }else{
             $new_project = new Project();
             $form_data['slug'] = Helper::createSlug($form_data['title'], Project::class);
-            $new_project->fill($form_data);
-            $new_project->save();
-
-            return redirect()->route('admin.projects.index')->with('success', 'Il progetto è stato creato');
 
         }
+        $new_project->fill($form_data);
+
+        $new_project->save();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Il progetto è stato creato');
     }
 
     /**
@@ -110,6 +125,18 @@ class ProjectController extends Controller
         // if($exist){
         //     return redirect()->route('admin.projects.index')->with('errorexist', 'Progetto già esistente');
         // }else{
+
+             // verifico l'esistenza della chiave 'image' in $form_data
+            if(array_key_exists('image', $form_data)){
+                // salvo l'immagine nello storage e ottengo il percorso
+                $image_path = Storage::put('uploads', $form_data['image']);
+
+                // ottengo il nome originale dell'immagine
+                $original_name = $request->file('image')->getClientOriginalName();
+                $form_data['image']= $image_path;
+                $form_data['image_original_name']= $original_name;
+
+            }
 
             if($form_data['title'] === $project->title){
             $form_data['slug'] = $project->slug;

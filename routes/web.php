@@ -30,8 +30,8 @@ Route::middleware(['auth', 'verified'])
             Route::get('/', [DashboardController::class, 'index'])->name('home');
             // rotte crud Project
             Route::resource('projects', ProjectController::class);
-            Route::resource('tecnologies', TecnologyController::class)->except('');
-            Route::resource('types', TypeController::class)->except('');
+            Route::resource('tecnologies', TecnologyController::class)->except('create', 'show','edit');
+            Route::resource('types', TypeController::class)->except('create','show', 'edit');
 
 
             Route::get('type-projects', [TypeController::class, 'typeProjects'] )->name('type-projects');

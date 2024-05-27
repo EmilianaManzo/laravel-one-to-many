@@ -21,4 +21,11 @@ class Helper{
 
         return $slug;
     }
+
+    public static function dateFormat($data){
+        // Restituisce un nuovo oggetto DateTime
+        $date = date_create($data);
+        // e quindi formatta la data
+        return date_format($date, 'd/m/Y');
+    }
 }

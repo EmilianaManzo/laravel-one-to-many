@@ -63,7 +63,7 @@
                   placeholder="Inserisci immagine"
                   onchange="showImage(event)"
                   value="{{old('image', $project?->image)}}">
-                  <img class="thumb img-thumbnail w-25 my-2" id="thumb" src="/img/noimg.jpg">
+                  <img class="thumb img-thumbnail w-25 my-2" onerror="this.src='/img/noimg.jpg'" id="thumb" src="{{asset('storage/' . $project?->image)}}" >
             </div>
 
 
